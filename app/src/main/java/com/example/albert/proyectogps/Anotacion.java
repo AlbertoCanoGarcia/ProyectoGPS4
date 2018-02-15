@@ -1,8 +1,5 @@
 package com.example.albert.proyectogps;
 
-/**
- * Created by Albert on 15/02/2018.
- */
 
 public class Anotacion {
         private String  Titulo;
