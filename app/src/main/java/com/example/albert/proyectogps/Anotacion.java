@@ -1,11 +1,9 @@
 package com.example.albert.proyectogps;
 
-import java.util.Date;
-
 /**
  * Created by Albert on 15/02/2018.
  */
-// clase para guardar las anotaciones aasdfdsdfd
+// clase para guardar las anotaciones
 public class Anotacion {
         private String  Titulo;
         private String Descripción;
