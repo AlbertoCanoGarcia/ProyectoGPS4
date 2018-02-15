@@ -9,13 +9,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,13 +29,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-    private Marker marcador;
     double lat = 0.0;
     double lon = 0.0;
+    Location ultimaLocalizacion;
+    private Marker marcador;
     private GoogleMap mMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    Location ultimaLocalizacion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,11 +112,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 }
 public void marcarUbicacionActual(){
     LatLng posicion = mostrarDatosLocalizacion(ultimaLocalizacion) ; // posicion actual
+    LatLng posicion2 = new LatLng(39.467494, -3.52829); // posicion destino
     mMap.moveCamera(CameraUpdateFactory. newLatLngZoom(posicion, 17f)) ; // hacemos zoom a esa posicion
     mMap.addMarker(new MarkerOptions()
             .position(posicion)
             .title("Tu ubicacion")
             .icon(BitmapDescriptorFactory. fromResource(R.drawable.posicionactual))) ;
+    mMap.addMarker(new MarkerOptions()
+            .position(posicion2));
 }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[]
