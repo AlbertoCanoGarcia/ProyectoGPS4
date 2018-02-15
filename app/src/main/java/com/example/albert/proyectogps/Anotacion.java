@@ -11,7 +11,7 @@ public class Anotacion {
         private String hora ;
         private String Dirección;
         private String Prioridad;
-
+    private String aaaaaaa;
     public Anotacion(String titulo, String descripción, String fecha, String hora, String dirección, String prioridad) {
         Titulo = titulo;
         Descripción = descripción;
