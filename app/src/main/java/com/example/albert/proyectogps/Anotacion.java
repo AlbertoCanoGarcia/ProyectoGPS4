@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Albert on 15/02/2018.
  */
-// clase para guardar las anotaciones
+// clase para guardar las anotaciones aasdfdsdfd
 public class Anotacion {
         private String  Titulo;
         private String Descripción;
