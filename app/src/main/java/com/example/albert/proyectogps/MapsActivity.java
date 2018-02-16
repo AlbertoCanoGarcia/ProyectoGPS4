@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -42,11 +44,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FloatingActionButton btUbicacion;
     private LocationServices servicioUbicacion;
     private Context contexto;
+    private final static  int MY_PERMISSION_FINE_LOCATION=101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         contexto = this;
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -94,7 +98,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
        // mMap.setMyLocationEnabled(true);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu mimenu) {
+        getMenuInflater().inflate(R.menu.menu,mimenu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem opcion_menu){
+
+        return true;
+    }
     // Metodo para saber en que coordenadas se encuentra actualmente el usuario
     public LatLng mostrarDatosLocalizacion(Location localizacion) {
         LatLng posicion = null;
@@ -158,9 +173,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
                         // for ActivityCompat#requestPermissions for more details.
-                        return;
+                       mMap.setMyLocationEnabled(true);
+                    }else{
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSION_FINE_LOCATION);
                     }
                     //mMap.setMyLocationEnabled(true);
+
+                    //mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 }
             }
         });
