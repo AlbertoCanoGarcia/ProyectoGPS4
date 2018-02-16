@@ -42,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FloatingActionButton btUbicacion;
     private LocationServices servicioUbicacion;
     private Context contexto;
+    private final static  int MY_PERMISSION_FINE_LOCATION=101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,9 +159,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
                         // for ActivityCompat#requestPermissions for more details.
-                        return;
+                        mMap.setMyLocationEnabled(true);
+                    }else{
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSION_FINE_LOCATION);
                     }
                     //mMap.setMyLocationEnabled(true);
+
+                    //mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 }
             }
         });
