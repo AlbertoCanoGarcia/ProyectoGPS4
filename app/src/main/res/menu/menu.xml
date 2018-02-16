@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+    <item android:id="@+id/nuevatarea"
+        android:title="Nueva Tarea"
+        android:icon="@android:drawable/ic_menu_preferences"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/listatareas"
+        android:title="Listar Tareas"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="10"/>
+
+    <item android:id="@+id/busca"
+        android:title="Buscar"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        android:orderInCategory="5"/>
+</menu>
