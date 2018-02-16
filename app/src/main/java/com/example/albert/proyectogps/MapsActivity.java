@@ -88,6 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new
                         String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
             }
         }
 
@@ -96,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtengo la localización actual del usuario y la muestro en el mapa
         ultimaLocalizacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-       // mMap.setMyLocationEnabled(true);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu mimenu) {
@@ -132,16 +133,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         marcarUbicacionActual();
         ubicarUsuario();
+        if (ActivityCompat.checkSelfPermission(contexto, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(contexto, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
     }
 
     public void marcarUbicacionActual() {
         LatLng posicion = mostrarDatosLocalizacion(ultimaLocalizacion); // posicion actual
         LatLng posicion2 = new LatLng(39.467494, -3.52829); // posicion destino
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 17f)); // hacemos zoom a esa posicion
-        mMap.addMarker(new MarkerOptions()
+        /*mMap.addMarker(new MarkerOptions()
                 .position(posicion)
                 .title("Tu ubicacion")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.posicionactual)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.posicionactual))); */
         mMap.addMarker(new MarkerOptions()
                 .position(posicion2));
     }
@@ -166,13 +171,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mostrarDatosLocalizacion(ultimaLocalizacion), 16f));
 
                     if (ActivityCompat.checkSelfPermission(contexto, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(contexto, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
                        mMap.setMyLocationEnabled(true);
                     }else{
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSION_FINE_LOCATION);
