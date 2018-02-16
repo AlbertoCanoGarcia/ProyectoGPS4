@@ -8,14 +8,18 @@ public class Anotacion {
         private String hora ;
         private String Dirección;
         private String Prioridad;
+        private String latitud;
+        private String longitud;
 
-    public Anotacion(String titulo, String descripción, String fecha, String hora, String dirección, String prioridad) {
+    public Anotacion(String titulo, String descripción, String fecha, String hora, String dirección, String prioridad, String latitud, String longitud) {
         Titulo = titulo;
         Descripción = descripción;
         Fecha = fecha;
         this.hora = hora;
         Dirección = dirección;
         Prioridad = prioridad;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     public String getTitulo() {
@@ -64,5 +68,21 @@ public class Anotacion {
 
     public void setPrioridad(String prioridad) {
         Prioridad = prioridad;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
 }
