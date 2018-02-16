@@ -138,6 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 grantResults);
     }
 
+    // posicion usuario
     private void ubicarUsuario() {
 
         btUbicacion = findViewById(R.id.btUbicacion);
