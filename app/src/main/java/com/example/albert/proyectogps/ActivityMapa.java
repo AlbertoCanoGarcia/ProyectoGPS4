@@ -40,6 +40,7 @@ import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.services.commons.geojson.LineString;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,6 +59,8 @@ public class ActivityMapa extends AppCompatActivity  {
     private FloatingActionButton btUbicacion;
     private Context contexto;
     private final static  int MY_PERMISSION_FINE_LOCATION=101;
+    Double latitud;
+    Double longitud;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,9 @@ public class ActivityMapa extends AppCompatActivity  {
         mMap = (MapView) findViewById(R.id.mapView);
         mMap.onCreate(savedInstanceState);
 
+
+        // Obtenemos el servicio para saber todo lo referido con nuestra localizacion
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
@@ -74,6 +80,8 @@ public class ActivityMapa extends AppCompatActivity  {
             public void onLocationChanged(Location location) {
 
                 mapa.setMyLocationEnabled(true);
+
+
             }
 
             @Override
@@ -106,6 +114,7 @@ public class ActivityMapa extends AppCompatActivity  {
         // Obtengo la localización actual del usuario y la muestro en el mapa
         ultimaLocalizacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        // Cuando se carga el mapa se realiza las siguientes instrucciones
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -117,21 +126,29 @@ public class ActivityMapa extends AppCompatActivity  {
                 localizaciondestino.setLatitude(39.467494);
                 localizaciondestino.setLongitude(-3.52829);
                 obtenerRuta(localizaciondestino,ultimaLocalizacion);
-            }
-        });
-/*
-        mMap.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+                Intent i = getIntent();
+                Bundle b = i.getExtras();
+                // Si se recive una nueva nota creada desde el activity NuevaTarea se añadira un marcador en el centro del mapa
+                // con los datos de la nueva tarea
+                if (b != null) {
+                    String titulo = (String) b.get("titulo");
+                    String descripcion= (String) b.get("descripcion");
+                    latitud=(Double) b.get("latitud");
+                    longitud=(Double) b.get("longitud");
 
+                    // ponemos el marcador con las coordenadas del centro del mapa en el momento que pulsamos el boton de
+                    // nueva tarea
                     mapa.addMarker(new MarkerOptions()
-                            .position()
-                            .title("aaaa")
-                            .snippet("muajajaja"));
-                    return true;
+                            .position(new LatLng(latitud,longitud))
+                            .title(titulo)
+                            .snippet(descripcion));
+
+
+                }
             }
         });
-*/
+
+
     }
 
     @Override
@@ -187,10 +204,15 @@ public class ActivityMapa extends AppCompatActivity  {
         int id=opcion_menu.getItemId();
 
         if(id==R.id.nuevatarea){
-            Intent i = new Intent(this,NuevaTarea.class);
+            // Almacenamos la longitud y latitud de la anotacion para luego guardarla en la base de datos y al iniciar
+            // de nuevo la aplicacion se vea esa anotacion en estas coordenadas
+            Double latitud=mapa.getCameraPosition().target.getLatitude();
+            Double longitud= mapa.getCameraPosition().target.getLongitude();
+
+            // y se lo pasamos al activity de la nueva tarea para luego poder poner un marcador en esas coordenadas
+            Intent i = new Intent(this,NuevaTarea.class).putExtra("latitud",latitud).putExtra("longitud",longitud);
             startActivity(i);
 
-            return true;
         }
 
         return true;

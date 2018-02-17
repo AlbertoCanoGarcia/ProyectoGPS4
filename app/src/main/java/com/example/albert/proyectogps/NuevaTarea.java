@@ -2,6 +2,7 @@ package com.example.albert.proyectogps;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 
 import java.util.Calendar;
 
@@ -19,6 +22,8 @@ public class NuevaTarea extends AppCompatActivity {
     EditText txtprioridad;
     EditText txtdescripcion;
     EditText txtdireccion;
+    Double  latitud;
+    Double longitud;
     int year,month,day,hora,min;
     Button guardar;
     Calendar calendar= Calendar.getInstance();
@@ -38,6 +43,8 @@ public class NuevaTarea extends AppCompatActivity {
         day=calendar.get(Calendar.DAY_OF_MONTH);
         hora=calendar.get(Calendar.HOUR_OF_DAY);
         min=calendar.get(Calendar.MINUTE);
+
+
 
         guardar= (Button) findViewById(R.id.botonguardar);
 
@@ -70,23 +77,32 @@ public class NuevaTarea extends AppCompatActivity {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent i = getIntent();
+                Bundle b = i.getExtras();
+                // Se recive las coordenadas donde va a esta el marcador de la anotacion
+                if (b != null) {
+                  latitud=(Double) b.get("latitud");
+                  longitud=(Double) b.get("longitud");
+
+                }
+
                 String titulo = txttitulo.getText().toString();
                 String descripcion= txtdescripcion.getText().toString();
                 String prioridad = txtprioridad.getText().toString();
                 String direccion= txtdireccion.getText().toString();
                 String fecha= nuevafecha.getText().toString();
                 String hora= nuevahora.getText().toString();
-                String latitud=null;
-                String longitud=null;
-                Anotacion a= new Anotacion(titulo,descripcion,fecha,hora,direccion,prioridad,latitud,longitud);
+
+
+
+                Intent intent = new Intent(NuevaTarea.this, ActivityMapa.class) .putExtra("titulo",titulo)
+                        .putExtra("descripcion",descripcion).putExtra("latitud",latitud).putExtra("longitud",longitud);
+                startActivity(intent);
             }
         });
     }
 
-    public void localizacion(){
-
-
-    }
 
     }
 
