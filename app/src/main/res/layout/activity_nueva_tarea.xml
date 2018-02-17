@@ -27,14 +27,34 @@
         android:layout_marginTop="100dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/tvprioridad"/>
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar bd"
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="200dp"
+        android:id="@+id/bd"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoria"
+        android:textSize="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="200dp"
+        android:id="@+id/tvcategoria"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="135dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/etprioridad"/>
-
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="135dp"
+        android:layout_marginLeft="200dp"
+        android:id="@+id/etcategoria"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +83,13 @@
         android:layout_marginTop="320dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/etdireccion" />
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:layout_marginTop="320dp"
+        android:layout_marginLeft="270dp"
+        android:id="@+id/bnuevadir"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +103,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="400dp"
         android:layout_marginLeft="10dp"
-        android:id="@+id/etfecha"/>
+        android:id="@+id/etfecha"
+        android:text="Introducir fecha"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,15 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="400dp"
         android:layout_marginLeft="200dp"
-        android:id="@+id/ethora" />
-
-    <Button
-        android:id="@+id/botonguardar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/bnuevadir"
-        android:layout_below="@+id/ethora"
-        android:layout_marginStart="12dp"
-        android:text="Guardar" />
+        android:id="@+id/ethora"
+        android:text="introducir hora"/>
 
 </RelativeLayout>

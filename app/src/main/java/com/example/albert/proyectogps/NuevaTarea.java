@@ -2,6 +2,8 @@ package com.example.albert.proyectogps;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,23 +17,28 @@ import java.util.Calendar;
 public class NuevaTarea extends AppCompatActivity {
     EditText nuevafecha;
     EditText nuevahora;
-    EditText txttitulo;
-    EditText txtprioridad;
-    EditText txtdescripcion;
-    EditText txtdireccion;
+    EditText tit;
+    EditText pri;
+    EditText desc;
+    EditText direc;
+    EditText cat;
     int year,month,day,hora,min;
-    Button guardar;
+    Button btn;
     Calendar calendar= Calendar.getInstance();
+
+    SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_tarea);
         nuevafecha=(EditText)findViewById(R.id.etfecha);
         nuevahora=(EditText)findViewById(R.id.ethora);
-        txttitulo=(EditText) findViewById(R.id.ettitulo);
-        txtprioridad=(EditText) findViewById(R.id.etprioridad);
-        txtdescripcion=(EditText) findViewById(R.id.etdescripcion);
-        txtdireccion=(EditText) findViewById(R.id.etdireccion);
+        tit=(EditText) findViewById(R.id.ettitulo);
+        pri=(EditText) findViewById(R.id.etprioridad);
+        desc=(EditText) findViewById(R.id.etdescripcion);
+        direc=(EditText) findViewById(R.id.etdireccion);
+        cat=(EditText) findViewById(R.id.etcategoria);
 
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH);
@@ -39,7 +46,8 @@ public class NuevaTarea extends AppCompatActivity {
         hora=calendar.get(Calendar.HOUR_OF_DAY);
         min=calendar.get(Calendar.MINUTE);
 
-        guardar= (Button) findViewById(R.id.botonguardar);
+        abrirBD();
+        btn= (Button) findViewById(R.id.botonguardar);
 
         nuevafecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,27 +75,36 @@ public class NuevaTarea extends AppCompatActivity {
             }
         });
 
-        guardar.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String titulo = txttitulo.getText().toString();
-                String descripcion= txtdescripcion.getText().toString();
-                String prioridad = txtprioridad.getText().toString();
-                String direccion= txtdireccion.getText().toString();
-                String fecha= nuevafecha.getText().toString();
-                String hora= nuevahora.getText().toString();
-                String latitud=null;
-                String longitud=null;
-                Anotacion a= new Anotacion(titulo,descripcion,fecha,hora,direccion,prioridad,latitud,longitud);
+                insertarDatos(tit.getText().toString(),pri.getText().toString(),cat.getText().toString(),
+                        desc.getText().toString(),direc.getText().toString(),nuevafecha.getText().toString(),nuevahora.getText().toString());
             }
         });
     }
 
-    public void localizacion(){
-
+    public void abrirBD(){
+        db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones(titulo VARCHAR,prioridad VARCHAR,categoria VARCHAR, " +
+                "descripcion VARCHAR, direccion VARCHAR, fecha DATE, hora VARCHAR);");
 
     }
 
+    public void insertarDatos(String titulo,String prioridad,String categoria,String descripcion,String direccion, String fecha,String hora){
+        db.execSQL("INSERT INTO ubicaciones VALUES('"+titulo+","+prioridad+","+categoria+","+descripcion+","+direccion+","+fecha+","+hora+"');");
+
     }
+    
+    public void cargarDatos(){
+        Cursor c=db.rawQuery("SELECT * FROM ubicaciones",null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            //añadir codigo para que aparezca en la lista
+            c.moveToNext();
+        }
+    }
+
+}
 
 
