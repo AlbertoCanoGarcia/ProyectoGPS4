@@ -76,7 +76,9 @@ public class NuevaTarea extends AppCompatActivity {
                 String direccion= txtdireccion.getText().toString();
                 String fecha= nuevafecha.getText().toString();
                 String hora= nuevahora.getText().toString();
-
+                String latitud=null;
+                String longitud=null;
+                Anotacion a= new Anotacion(titulo,descripcion,fecha,hora,direccion,prioridad,latitud,longitud);
             }
         });
     }

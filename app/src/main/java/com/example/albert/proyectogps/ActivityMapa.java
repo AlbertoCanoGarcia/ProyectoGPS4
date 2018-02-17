@@ -119,17 +119,19 @@ public class ActivityMapa extends AppCompatActivity  {
                 obtenerRuta(localizaciondestino,ultimaLocalizacion);
             }
         });
-
+/*
         mMap.setOnTouchListener(new View.OnTouchListener() {
-
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                return false;
+                    mapa.addMarker(new MarkerOptions()
+                            .position()
+                            .title("aaaa")
+                            .snippet("muajajaja"));
+                    return true;
             }
         });
-
+*/
     }
 
     @Override
