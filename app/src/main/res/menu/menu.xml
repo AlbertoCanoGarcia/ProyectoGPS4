@@ -10,7 +10,6 @@ tools:context=".ActivityMapa">
 
     <item android:id="@+id/listatareas"
         android:title="Listar Tareas"
-        android:icon="@android:drawable/ic_menu_info_details"
         app:showAsAction="ifRoom"
         android:orderInCategory="10"/>
 
