@@ -2,48 +2,45 @@ package com.example.albert.proyectogps;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 public class NuevaTarea extends AppCompatActivity {
-
     EditText nuevafecha;
     EditText nuevahora;
+    EditText txttitulo;
+    EditText txtprioridad;
+    EditText txtdescripcion;
+    EditText txtdireccion;
     int year,month,day,hora,min;
-    Button btn;
-    EditText tit, pri, cat, desc, direc;
-
+    Button guardar;
     Calendar calendar= Calendar.getInstance();
-
-    SQLiteDatabase db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_tarea);
-
-        abrirBD();
-        btn=(Button)findViewById(R.id.bd);
-        tit=(EditText)findViewById(R.id.ettitulo);
-        pri=(EditText)findViewById(R.id.etprioridad);
-        cat=(EditText)findViewById(R.id.etprioridad);
-        desc=(EditText)findViewById(R.id.etcategoria);
-        direc=(EditText)findViewById(R.id.etdireccion);
-
         nuevafecha=(EditText)findViewById(R.id.etfecha);
         nuevahora=(EditText)findViewById(R.id.ethora);
+        txttitulo=(EditText) findViewById(R.id.ettitulo);
+        txtprioridad=(EditText) findViewById(R.id.etprioridad);
+        txtdescripcion=(EditText) findViewById(R.id.etdescripcion);
+        txtdireccion=(EditText) findViewById(R.id.etdireccion);
+
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH);
         day=calendar.get(Calendar.DAY_OF_MONTH);
         hora=calendar.get(Calendar.HOUR_OF_DAY);
         min=calendar.get(Calendar.MINUTE);
+
+        guardar= (Button) findViewById(R.id.botonguardar);
+
         nuevafecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,32 +67,27 @@ public class NuevaTarea extends AppCompatActivity {
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        guardar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                insertarDatos(tit.getText().toString(),desc.getText().toString(),cat.getText().toString(),pri.getText().toString(),
-                        direc.getText().toString(),nuevafecha.getText().toString(),nuevahora.getText().toString());
+            public void onClick(View view) {
+                String titulo = txttitulo.getText().toString();
+                String descripcion= txtdescripcion.getText().toString();
+                String prioridad = txtprioridad.getText().toString();
+                String direccion= txtdireccion.getText().toString();
+                String fecha= nuevafecha.getText().toString();
+                String hora= nuevahora.getText().toString();
+                String latitud=null;
+                String longitud=null;
+                Anotacion a= new Anotacion(titulo,descripcion,fecha,hora,direccion,prioridad,latitud,longitud);
             }
         });
     }
 
-    public void abrirBD(){
-        db= openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones (titulo VARCHAR, descripcion VARCHAR," +
-                "categoria VARCHAR, prioridad VARCHAR, direccion VARCHAR, fecha DATE, hora VARCHAR)");
-    }
-    public void insertarDatos(String titulo,String descripcion,String categoria,
-                              String prioridad,String direccion, String fecha,String hora){
-        db.execSQL("INSERT INTO ubicaciones VALUES('"+titulo+","+descripcion+","+categoria+","+prioridad+","+direccion+","+fecha+","+hora+"');");
-    }
-    public void cargarDatos(){
-        Cursor c=db.rawQuery("SELECT * FROM ubicaciones",null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            //añadir los datos a la lista
-            //falta poner la instruccion para ello
-            c.moveToNext();
-        }
+    public void localizacion(){
+
+
     }
 
-}
+    }
+
+

@@ -2,6 +2,7 @@ package com.example.albert.proyectogps;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -16,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -117,9 +119,21 @@ public class ActivityMapa extends AppCompatActivity  {
                 obtenerRuta(localizaciondestino,ultimaLocalizacion);
             }
         });
+/*
+        mMap.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
-
+                    mapa.addMarker(new MarkerOptions()
+                            .position()
+                            .title("aaaa")
+                            .snippet("muajajaja"));
+                    return true;
+            }
+        });
+*/
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -170,6 +184,14 @@ public class ActivityMapa extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem opcion_menu){
+        int id=opcion_menu.getItemId();
+
+        if(id==R.id.nuevatarea){
+            Intent i = new Intent(this,NuevaTarea.class);
+            startActivity(i);
+
+            return true;
+        }
 
         return true;
     }
