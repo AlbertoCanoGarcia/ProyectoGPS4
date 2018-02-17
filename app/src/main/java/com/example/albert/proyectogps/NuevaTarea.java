@@ -2,6 +2,8 @@ package com.example.albert.proyectogps;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +27,7 @@ public class NuevaTarea extends AppCompatActivity {
     int year,month,day,hora,min;
     Button btn;
     Calendar calendar= Calendar.getInstance();
-
+    Context con;
     SQLiteDatabase db;
 
     @Override
@@ -45,9 +47,9 @@ public class NuevaTarea extends AppCompatActivity {
         day=calendar.get(Calendar.DAY_OF_MONTH);
         hora=calendar.get(Calendar.HOUR_OF_DAY);
         min=calendar.get(Calendar.MINUTE);
-
+        con=this;
         abrirBD();
-        btn= (Button) findViewById(R.id.botonguardar);
+        btn= (Button) findViewById(R.id.bd);
 
         nuevafecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +80,22 @@ public class NuevaTarea extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Double latitud=0.0;
+                Double longitud=0.0;
+                Intent i = getIntent();
+                Bundle b = i.getExtras();
+                // Si se recive una nueva nota creada desde el activity NuevaTarea se añadira un marcador en el centro del mapa
+                // con los datos de la nueva tarea
+                if (b != null) {
+                    String titulo = (String) b.get("titulo");
+                    String descripcion = (String) b.get("descripcion");
+                    latitud = (Double) b.get("latitud");
+                    longitud = (Double) b.get("longitud");
+                }
+                Intent a = new Intent(con ,ActivityMapa.class).putExtra("latitud",latitud).putExtra("longitud",longitud)
+                        .putExtra("titulo",tit.getText().toString()).putExtra("descripcion",desc.getText().toString());
+                startActivity(a);
+
                 insertarDatos(tit.getText().toString(),pri.getText().toString(),cat.getText().toString(),
                         desc.getText().toString(),direc.getText().toString(),nuevafecha.getText().toString(),nuevahora.getText().toString());
             }
