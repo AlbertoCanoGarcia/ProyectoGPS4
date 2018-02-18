@@ -13,6 +13,11 @@ tools:context=".ActivityMapa">
         app:showAsAction="ifRoom"
         android:orderInCategory="10"/>
 
+    <item android:id="@+id/vertareas"
+        android:title="Ver Tareas"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="10"/>
+
     <item android:id="@+id/busca"
         android:title="Buscar"
         android:icon="@android:drawable/ic_menu_search"
