@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class AdapterItem extends BaseAdapter {
 
     protected Activity activity;
-    protected ArrayList<Category> items;
+    protected ArrayList<Anotacion> items;
 
-    public AdapterItem (Activity activity, ArrayList<Category> items) {
+    public AdapterItem (Activity activity, ArrayList<Anotacion> items) {
         this.activity = activity;
         this.items = items;
     }
@@ -35,7 +35,7 @@ public class AdapterItem extends BaseAdapter {
         items.clear();
     }
 
-    public void addAll(ArrayList<Category> category) {
+    public void addAll(ArrayList<Anotacion> category) {
         for (int i =0 ; i < category.size(); i++) {
             items.add(category.get(i));
         }
@@ -61,19 +61,18 @@ public class AdapterItem extends BaseAdapter {
             v = inf.inflate(R.layout.lista_fila, null);
         }
 
-        Category dir = items.get(position);
+        Anotacion dir = items.get(position);
 
         TextView title = (TextView) v.findViewById(R.id.txf_titulo);
-        title.setText(dir.getTitle());
+        title.setText(dir.getTitulo());
 
         TextView description = (TextView) v.findViewById(R.id.txf_datos);
-        description.setText(dir.getDescription());
+        description.setText(dir.getDescripción());
 
         TextView date = (TextView) v.findViewById(R.id.txf_datos);
-        date.setText(dir.getDate());
+        date.setText(dir.getFecha());
 
-        ImageView imagen = (ImageView) v.findViewById(R.id.icon);
-        imagen.setImageDrawable(dir.getImage());
+
 
         return v;
     }
