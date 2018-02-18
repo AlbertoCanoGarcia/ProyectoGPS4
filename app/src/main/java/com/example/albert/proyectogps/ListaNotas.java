@@ -1,5 +1,7 @@
 package com.example.albert.proyectogps;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,14 +19,14 @@ import java.util.ArrayList;
 public class ListaNotas extends AppCompatActivity {
 
     SQLiteDatabase db;
-
+    ArrayList<Anotacion> arrayanotaciones;
     ListView listv;
     ArrayList<String> lista;
-    ArrayAdapter adaptador;
+    ArrayAdapter<String> adaptador;
 
     Category cat = null;
-
-
+    Context con=this;
+    Activity activity=this;
 
     int i = 0; int x = 0;
 
@@ -32,17 +34,20 @@ public class ListaNotas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_notas);
+        listv = (ListView) findViewById(R.id.listNot);
 
-        int lst=getIntent().getIntExtra("lista",0);
 
 
-        final ArrayList<Category> category = new ArrayList<Category>();
-         //instanciamos el arrayList que va a ir el el AdapterCategory
+
+        arrayanotaciones = new ArrayList<Anotacion>();
+         //instanciamos el arrayList que va a ir el el Adapter
 
         db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
+
+        CargarDatos();
         //db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones(titulo VARCHAR,prioridad VARCHAR,categoria VARCHAR, " +
            //     "descripcion VARCHAR, direccion VARCHAR, fecha DATE, hora VARCHAR);");
-
+/*
         String sqlLeerTodo = "SELECT * FROM ubicaciones;";
 
         Cursor c = db.rawQuery(sqlLeerTodo, null);
@@ -56,7 +61,7 @@ public class ListaNotas extends AppCompatActivity {
         String desc [] = new String[x];
         String fecha [] = new String[x];
 
-        // Obtenemos los índices de las columnas de "titulo" , "descripcion" y "fecha". Esto nos
+        // Obtenemos los índices de las columnas de "nombre" y "edad". Esto nos
         // permitirá acceder más tarde a estas columnas
         int indiceTitulo = c.getColumnIndex("titulo");
         int indiceDescripcion = c.getColumnIndex("descripcion");
@@ -95,7 +100,45 @@ public class ListaNotas extends AppCompatActivity {
               //  startActivity(ver);
             //}
         //});
+*/
 
+    }
+    public void CargarDatos() {
+        Cursor c = db.rawQuery("Select * from ubicaciones", null);
+// Obtenemos los índices de las columnas de "nombre" y "edad". Esto nos
+// permitirá acceder más tarde a estas columnas
+        int indicetitulo = c.getColumnIndex("titulo");
+        int indicecategoria = c.getColumnIndex("categoria");
+        int indicedescripcion = c.getColumnIndex("descripcion");
+        int indicefecha = c.getColumnIndex("fecha");
+        int indicehora = c.getColumnIndex("hora");
+        int indicelatitud = c.getColumnIndex("latitud");
+        int indicelongitud = c.getColumnIndex("longitud");
+        int indicedireccion = c.getColumnIndex("direccion");
+        int indiceprioridad = c.getColumnIndex("prioridad");
+// Movemos el cursor al primer resultado
+        c.moveToFirst();
+// Recorremos el resto de resultados
 
+        if(c.getCount()!=0){
+            arrayanotaciones.clear();
+            int i=0;
+            while (i<c.getCount()) {
+                Anotacion anotacion=
+                        new Anotacion(c.getString(indicetitulo),c.getString(indicedescripcion)
+                                ,c.getString(indicefecha),
+                                c.getString(indicehora),c.getString(indicedireccion),
+                                c.getString(indiceprioridad),c.getString(indicelatitud),c.getString(indicelongitud));
+                arrayanotaciones.add(anotacion);
+                c.moveToNext() ;
+                i++;
+                AdapterItem adapter = new AdapterItem(activity, arrayanotaciones);
+                listv.setAdapter(adapter);
+                listv.setClickable(true);
+            }
+
+            //adaptador = new ArrayAdapter<String>(con, android.R.layout.simple_list_item_1, arrayanotaciones.toString());
+            //lista.setAdapter(adaptador);
+        }
     }
 }
