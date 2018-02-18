@@ -88,17 +88,21 @@ public class ListaNotas extends AppCompatActivity {
         AdapterItem adapter = new AdapterItem(this, category);
         listv.setAdapter(adapter);
         listv.setClickable(true);
-
-        //listv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            //public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-              //  int tareaselec = position ;
-              //  Intent ver = new Intent(ListaNotas.this, NuevaTarea.class);
-              //  ver.putExtra("Id",position);
-              //  startActivity(ver);
-            //}
-        //});
 */
+
+        listv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+               int tareaselec = position ;
+               Double lo= Double.parseDouble(arrayanotaciones.get(position).getLatitud());
+               Double la=  Double.parseDouble(arrayanotaciones.get(position).getLongitud());
+                Intent ver = new Intent(ListaNotas.this, ActivityMapa.class);
+                ver.putExtra("latitud",la)
+                .putExtra("longitud",lo);
+                startActivity(ver);
+            }
+        });
+
 
     }
     public void CargarDatos() {

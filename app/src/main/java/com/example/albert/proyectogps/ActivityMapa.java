@@ -123,34 +123,23 @@ public class ActivityMapa extends AppCompatActivity  {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
                 marcarUbicacionActual(mapboxMap);
-
                 mapa = mapboxMap;
                 CargarDatos();
                 ubicarUsuario();
                 mapa.setMyLocationEnabled(true);
                 Location localizaciondestino= new Location(ultimaLocalizacion);
-                localizaciondestino.setLatitude(39.467494);
-                localizaciondestino.setLongitude(-3.52829);
-                obtenerRuta(localizaciondestino,ultimaLocalizacion);
                 Intent i = getIntent();
                 Bundle b = i.getExtras();
-                // Si se recive una nueva nota creada desde el activity NuevaTarea se añadira un marcador en el centro del mapa
-                // con los datos de la nueva tarea
+
                 if (b != null) {
-                    String titulo = (String) b.get("titulo");
-                    String descripcion= (String) b.get("descripcion");
-                    latitud=(Double) b.get("latitud");
-                    longitud=(Double) b.get("longitud");
+                    latitud = (Double) b.get("latitud");
+                    longitud = (Double) b.get("longitud");
 
-                    // ponemos el marcador con las coordenadas del centro del mapa en el momento que pulsamos el boton de
-                    // nueva tarea
-                    mapa.addMarker(new MarkerOptions()
-                            .position(new LatLng(latitud,longitud))
-                            .title(titulo)
-                            .snippet(descripcion));
-
-
+                    localizaciondestino.setLatitude(latitud);
+                    localizaciondestino.setLongitude(longitud);
+                    obtenerRuta(localizaciondestino,ultimaLocalizacion);
                 }
+
             }
         });
 
@@ -371,6 +360,9 @@ public class ActivityMapa extends AppCompatActivity  {
                 arrayanotaciones.add(anotacion);
                 Double lat=Double.parseDouble(c.getString(indicelatitud));
                 Double lon = Double.parseDouble(c.getString(indicelongitud));
+
+                // Si se recive una nueva nota creada desde el activity NuevaTarea se añadira un marcador en el centro del mapa
+                // con los datos de la nueva tarea
                 mapa.addMarker(new MarkerOptions()
                         .position(new LatLng(lon,lat))
                         .title(c.getString(indicetitulo))
