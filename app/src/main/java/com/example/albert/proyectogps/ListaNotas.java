@@ -94,7 +94,7 @@ public class ListaNotas extends AppCompatActivity {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 int tareaselec = position ;
                 Intent ver = new Intent(ListaNotas.this, DatosTarea.class);
-                ver.putExtra("nota",arrayanotaciones.get(tareaselec)));
+                ver.putExtra("nota", tareaselec);
                 startActivity(ver);
             }
         });
