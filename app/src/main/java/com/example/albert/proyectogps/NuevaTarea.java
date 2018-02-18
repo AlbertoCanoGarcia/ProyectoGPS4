@@ -116,7 +116,7 @@ public class NuevaTarea extends AppCompatActivity {
         db.execSQL("INSERT INTO ubicaciones (titulo,categoria,descripcion,direccion,fecha,hora,longitud,latitud) VALUES('"+titulo+"','"+categoria+"','"+descripcion+"','"+direccion+"','"+fecha+"','"+hora+"','"+latitud+"','"+longitud+"');");
 
     }
-    
+
     public void cargarDatos(){
         Cursor c=db.rawQuery("SELECT * FROM ubicaciones",null);
         c.moveToFirst();

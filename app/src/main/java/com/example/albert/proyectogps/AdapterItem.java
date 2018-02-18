@@ -69,7 +69,7 @@ public class AdapterItem extends BaseAdapter {
         TextView description = (TextView) v.findViewById(R.id.txf_datos);
         description.setText(dir.getDescription());
 
-        TextView date = (TextView) v.findViewById(R.id.txf_datos);
+        TextView date = (TextView) v.findViewById(R.id.txf_fecha);
         date.setText(dir.getDate());
 
         ImageView imagen = (ImageView) v.findViewById(R.id.icon);

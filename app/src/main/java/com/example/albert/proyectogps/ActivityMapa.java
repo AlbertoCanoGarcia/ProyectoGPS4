@@ -216,6 +216,7 @@ public class ActivityMapa extends AppCompatActivity  {
         }
         if(id==R.id.vertareas){
             Intent intent = new Intent(this, ListaNotas.class);
+            intent.putExtra("lista",0);
             startActivity(intent);
         }
 
