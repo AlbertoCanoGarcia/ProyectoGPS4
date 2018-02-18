@@ -89,25 +89,20 @@ public class ListaNotas extends AppCompatActivity {
         listv.setAdapter(adapter);
         listv.setClickable(true);
 */
-
         listv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-               int tareaselec = position ;
-               Double lo= Double.parseDouble(arrayanotaciones.get(position).getLatitud());
-               Double la=  Double.parseDouble(arrayanotaciones.get(position).getLongitud());
-                Intent ver = new Intent(ListaNotas.this, ActivityMapa.class);
-                ver.putExtra("latitud",la)
-                .putExtra("longitud",lo);
+                int tareaselec = position ;
+                Intent ver = new Intent(ListaNotas.this, DatosTarea.class);
+                ver.putExtra("nota",arrayanotaciones.get(tareaselec)));
                 startActivity(ver);
             }
         });
-
-
     }
+
     public void CargarDatos() {
         Cursor c = db.rawQuery("Select * from ubicaciones", null);
-// Obtenemos los índices de las columnas de "nombre" y "edad". Esto nos
+// Obtenemos los índices de las columnas. Esto nos
 // permitirá acceder más tarde a estas columnas
         int indicetitulo = c.getColumnIndex("titulo");
         int indicecategoria = c.getColumnIndex("categoria");
