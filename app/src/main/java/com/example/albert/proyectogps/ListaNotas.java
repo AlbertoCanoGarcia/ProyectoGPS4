@@ -23,8 +23,6 @@ public class ListaNotas extends AppCompatActivity {
     ListView listv;
     ArrayList<String> lista;
     ArrayAdapter<String> adaptador;
-
-    Category cat = null;
     Context con=this;
     Activity activity=this;
 

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -61,6 +63,8 @@ public class ActivityMapa extends AppCompatActivity  {
     private final static  int MY_PERMISSION_FINE_LOCATION=101;
     Double latitud;
     Double longitud;
+    SQLiteDatabase db;
+    ArrayList<Anotacion> arrayanotaciones;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +123,9 @@ public class ActivityMapa extends AppCompatActivity  {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
                 marcarUbicacionActual(mapboxMap);
+
                 mapa = mapboxMap;
+                CargarDatos();
                 ubicarUsuario();
                 mapa.setMyLocationEnabled(true);
                 Location localizaciondestino= new Location(ultimaLocalizacion);
@@ -255,14 +261,14 @@ public class ActivityMapa extends AppCompatActivity  {
         });
     }
 
-
+// FIJA LA CAMARA EN LA POSICION ACTUAL DEEL USUARIO Y AÑADE UN MARCADOR POR DEFECTO
     public void marcarUbicacionActual(MapboxMap mapboxMap) {
         LatLng posicion = mostrarDatosLocalizacion(ultimaLocalizacion); // posicion actual
         LatLng posicion2 = new LatLng(39.467494, -3.52829); // posicion destino
         mapboxMap.addMarker(new MarkerOptions()
                 .position(posicion2)
-                .title("aaaa")
-                .snippet("muajajaja"));
+                .title("Mercadona")
+                .snippet("Comprar leche y pan"));
 
         CameraPosition position = new CameraPosition.Builder()
                 .target(posicion) // Fija la posición
@@ -329,6 +335,54 @@ public class ActivityMapa extends AppCompatActivity  {
         // Resalta la posición del usuario si no lo estaba ya
         if (!mapa.isMyLocationEnabled())
             mapa.setMyLocationEnabled(true);
+    }
+
+    public void CargarDatos() {
+        arrayanotaciones = new ArrayList<Anotacion>();
+        //instanciamos el arrayList que va a ir el el Adapter
+
+        db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
+        Cursor c = db.rawQuery("Select * from ubicaciones", null);
+// Obtenemos los índices de las columnas de "nombre" y "edad". Esto nos
+// permitirá acceder más tarde a estas columnas
+        int indicetitulo = c.getColumnIndex("titulo");
+        int indicecategoria = c.getColumnIndex("categoria");
+        int indicedescripcion = c.getColumnIndex("descripcion");
+        int indicefecha = c.getColumnIndex("fecha");
+        int indicehora = c.getColumnIndex("hora");
+        int indicelatitud = c.getColumnIndex("latitud");
+        int indicelongitud = c.getColumnIndex("longitud");
+        int indicedireccion = c.getColumnIndex("direccion");
+        int indiceprioridad = c.getColumnIndex("prioridad");
+// Movemos el cursor al primer resultado
+        c.moveToFirst();
+// Recorremos el resto de resultados
+
+        if(c.getCount()!=0){
+            arrayanotaciones.clear();
+            int i=0;
+            while (i<c.getCount()) {
+                Anotacion anotacion=
+                        new Anotacion(c.getString(indicetitulo),c.getString(indicedescripcion)
+                                ,c.getString(indicefecha),
+                                c.getString(indicehora),c.getString(indicedireccion),
+                                c.getString(indiceprioridad),c.getString(indicelatitud),c.getString(indicelongitud));
+                arrayanotaciones.add(anotacion);
+                Double lat=Double.parseDouble(c.getString(indicelatitud));
+                Double lon = Double.parseDouble(c.getString(indicelongitud));
+                mapa.addMarker(new MarkerOptions()
+                        .position(new LatLng(lon,lat))
+                        .title(c.getString(indicetitulo))
+                        .snippet(c.getString(indicedescripcion)));
+
+                c.moveToNext() ;
+                i++;
+
+            }
+
+            //adaptador = new ArrayAdapter<String>(con, android.R.layout.simple_list_item_1, arrayanotaciones.toString());
+            //lista.setAdapter(adaptador);
+        }
     }
 
 }
