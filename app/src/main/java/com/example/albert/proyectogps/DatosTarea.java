@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 /**
  * Created by pilar on 18/02/2018.
  */
@@ -23,6 +25,8 @@ public class DatosTarea extends AppCompatActivity {
     EditText cat;
     EditText lat;
     EditText lon;
+
+    ArrayList<Anotacion> arrayanotaciones;
 
     SQLiteDatabase db;
     int x = 0, i = 0;
@@ -41,13 +45,15 @@ public class DatosTarea extends AppCompatActivity {
         lat = (EditText) findViewById(R.id.etlatitud);
         lon = (EditText) findViewById(R.id.etlongitud);
 
+        arrayanotaciones = new ArrayList<Anotacion>();
+
         db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
 
         String sqlLeerTodo = "SELECT * FROM ubicaciones;";
 
         Cursor c = db.rawQuery(sqlLeerTodo, null);
 
-        c.moveToFirst();
+        /*c.moveToFirst();
         while (c != null){
             x++;
             c.moveToNext();
@@ -62,7 +68,7 @@ public class DatosTarea extends AppCompatActivity {
         String dir [] = new String[x];
         String lati [] = new String[x];
         String longi [] = new String[x];
-
+*/
 
         int indiceTitulo = c.getColumnIndex("titulo");
         int indiceDescripcion = c.getColumnIndex("descripcion");
@@ -78,33 +84,31 @@ public class DatosTarea extends AppCompatActivity {
         c.moveToFirst();
 
         // Recorremos el resto de resultados
-        while (c != null){
-
-            titulo[i] = c.getString(indiceTitulo);
-            desc[i] = c.getString(indiceDescripcion);
-            fecha[i] = c.getString(indiceFecha);
-            dir[i] = c.getString(indiceDir);
-            cate[i] = c.getString(indiceCate);
-            hora[i] = c.getString(indiceHora);
-            prio[i] = c.getString(indicePrio);
-            lati[i] = c.getString(indiceLati);
-            longi[i] = c.getString(indiceLongi);
-
-            i++;
-            c.moveToNext();
+        if(c.getCount()!=0) {
+            arrayanotaciones.clear();
+            int i = 0;
+            while (i < c.getCount()) {
+                Anotacion anotacion =
+                        new Anotacion(c.getString(indiceTitulo), c.getString(indiceDescripcion)
+                                , c.getString(indiceFecha),
+                                c.getString(indiceHora), c.getString(indiceDir),
+                                c.getString(indicePrio), c.getString(indiceLati), c.getString(indiceLongi));
+                arrayanotaciones.add(anotacion);
+                c.moveToNext();
+                i++;
+            }
         }
 
         Bundle bundle = getIntent().getExtras();
-        int pos=Integer.parseInt(bundle.getString("Id"));
+        int pos=Integer.parseInt(bundle.getString("nota"));
 
-        tit.setText(titulo[pos]);
-        des.setText(titulo[pos]);
-        hor.setText(titulo[pos]);
-        fec.setText(titulo[pos]);
-        direc.setText(titulo[pos]);
-        cat.setText(titulo[pos]);
-        lat.setText(titulo[pos]);
-        lon.setText(titulo[pos]);
+        tit.setText(arrayanotaciones.get(pos).getTitulo());
+        des.setText(arrayanotaciones.get(pos).getDescripción());
+        hor.setText(arrayanotaciones.get(pos).getHora());
+        fec.setText(arrayanotaciones.get(pos).getFecha());
+        direc.setText(arrayanotaciones.get(pos).getDirección());
+        lat.setText(arrayanotaciones.get(pos).getLatitud());
+        lon.setText(arrayanotaciones.get(pos).getLongitud());
 
         Button btn2 = (Button) findViewById(R.id.volver);
         btn2.setOnClickListener(new View.OnClickListener() {
