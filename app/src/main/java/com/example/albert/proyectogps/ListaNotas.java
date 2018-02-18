@@ -38,8 +38,8 @@ public class ListaNotas extends AppCompatActivity {
          //instanciamos el arrayList que va a ir el el AdapterCategory
 
         db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones(titulo VARCHAR,prioridad VARCHAR,categoria VARCHAR, " +
-                "descripcion VARCHAR, direccion VARCHAR, fecha DATE, hora VARCHAR);");
+        //db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones(titulo VARCHAR,prioridad VARCHAR,categoria VARCHAR, " +
+           //     "descripcion VARCHAR, direccion VARCHAR, fecha DATE, hora VARCHAR);");
 
         String sqlLeerTodo = "SELECT * FROM gps_ubicaciones;";
 

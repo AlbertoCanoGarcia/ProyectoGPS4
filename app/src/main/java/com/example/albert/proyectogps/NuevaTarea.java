@@ -92,25 +92,28 @@ public class NuevaTarea extends AppCompatActivity {
                     latitud = (Double) b.get("latitud");
                     longitud = (Double) b.get("longitud");
                 }
+                insertarDatos(tit.getText().toString(),pri.getText().toString(),cat.getText().toString(),
+                        desc.getText().toString(),direc.getText().toString(),nuevafecha.getText().toString(),nuevahora.getText().toString(),latitud,longitud);
+
                 Intent a = new Intent(con ,ActivityMapa.class).putExtra("latitud",latitud).putExtra("longitud",longitud)
                         .putExtra("titulo",tit.getText().toString()).putExtra("descripcion",desc.getText().toString());
                 startActivity(a);
 
-                insertarDatos(tit.getText().toString(),pri.getText().toString(),cat.getText().toString(),
-                        desc.getText().toString(),direc.getText().toString(),nuevafecha.getText().toString(),nuevahora.getText().toString());
+
             }
         });
     }
 
     public void abrirBD(){
-        db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones(titulo VARCHAR,prioridad VARCHAR,categoria VARCHAR, " +
-                "descripcion VARCHAR, direccion VARCHAR, fecha DATE, hora VARCHAR);");
 
+        db=openOrCreateDatabase("gps_ubicaciones",MODE_PRIVATE,null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS ubicaciones (titulo VARCHAR(300), categoria VARCHAR(300) ,prioridad VARCHAR(300),descripcion VARCHAR(300),direccion VARCHAR(300),fecha VARCHAR(300),hora VARCHAR(300),nota VARCHAR(300),latitud decimal,longitud decimal);");
+       // db.execSQL("Drop Table ubicaciones");
+       // getApplicationContext().deleteDatabase("gps_ubicaciones");
     }
 
-    public void insertarDatos(String titulo,String prioridad,String categoria,String descripcion,String direccion, String fecha,String hora){
-        db.execSQL("INSERT INTO ubicaciones VALUES('"+titulo+","+prioridad+","+categoria+","+descripcion+","+direccion+","+fecha+","+hora+"');");
+    public void insertarDatos(String titulo,String prioridad,String categoria,String descripcion,String direccion, String fecha,String hora, Double latitud, Double longitud ){
+        db.execSQL("INSERT INTO ubicaciones (titulo,categoria,descripcion,direccion,fecha,hora,longitud,latitud) VALUES('"+titulo+"','"+categoria+"','"+descripcion+"','"+direccion+"','"+fecha+"','"+hora+"','"+latitud+"','"+longitud+"');");
 
     }
     
